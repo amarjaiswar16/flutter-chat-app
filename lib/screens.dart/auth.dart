@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+final _firebase = FirebaseAuth.instance;
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -15,13 +18,29 @@ class _AuthScreenState extends State<AuthScreen> {
   var _enteredEmail = '';
   var _enteredPassword = '';
 
-  void _submit() {
+  void _submit() async {
     final isValid = _form.currentState!.validate();
 
-    if(isValid) {
-      _form.currentState!.save();
-      print(_enteredEmail);
-      print(_enteredPassword);
+    if (!isValid) {
+      return;
+    }
+    _form.currentState!.save();
+
+    if (_isLogin) {
+      //log in user
+    } else {
+      try {
+        final userCredentials = await _firebase.createUserWithEmailAndPassword(
+          email: _enteredEmail,
+          password: _enteredPassword,
+        );
+        print(userCredentials);
+      } on FirebaseAuthException catch (error) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(error.message ?? 'Authentication failed.')),
+        );
+      }
     }
   }
 
@@ -58,9 +77,10 @@ class _AuthScreenState extends State<AuthScreen> {
                         ),
                         keyboardType: TextInputType.emailAddress,
                         textCapitalization: TextCapitalization.none,
-
                         validator: (value) {
-                          if(value == null || value.trim().isEmpty || !value.contains('@')) {
+                          if (value == null ||
+                              value.trim().isEmpty ||
+                              !value.contains('@')) {
                             return 'Please enter a valid email address.';
                           }
 
@@ -76,7 +96,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         ),
                         obscureText: true,
                         validator: (value) {
-                          if(value == null || value.trim().length < 6) {
+                          if (value == null || value.trim().length < 6) {
                             return 'Password must be at least 6 characters long.';
                           }
 
@@ -92,7 +112,8 @@ class _AuthScreenState extends State<AuthScreen> {
                       ElevatedButton(
                         onPressed: _submit,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primaryContainer,
                           elevation: 4,
                         ),
                         child: Text(_isLogin ? 'Login' : 'Signup'),
@@ -103,7 +124,9 @@ class _AuthScreenState extends State<AuthScreen> {
                             _isLogin = !_isLogin;
                           });
                         },
-                        child: Text(_isLogin ? 'Create an account' : 'alread have account. Login'),
+                        child: Text(_isLogin
+                            ? 'Create an account'
+                            : 'alread have account. Login'),
                       ),
                     ]),
                   ),
