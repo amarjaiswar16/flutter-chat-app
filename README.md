@@ -14,3 +14,12 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+
+# Description
+
+● Developed Chat App: Firebase-powered messaging app with authentication,
+real-time messaging, image uploads, and push notifications
+● Connecting third-party backend via Firebase SDK in Flutterfire CLI
+● Utilized packages: image_picker, firebase_core, firebase_auth,
+firebase_storage, cloud_firestore, firebase_messaging
