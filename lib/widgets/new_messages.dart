@@ -52,18 +52,28 @@ class _NewMessagesState extends State<NewMessages> {
       padding: const EdgeInsets.only(left: 15, right: 1, bottom: 14),
       child: Row(children: [
         Expanded(
-          child: TextField(
-            controller: _messageController,
-            textCapitalization: TextCapitalization.sentences,
-            autocorrect: true,
-            enableSuggestions: true,
-            decoration: const InputDecoration(labelText: 'Send a message...'),
+          child: SizedBox(
+            height: 60,
+            width: double.infinity,
+            child: TextField(
+              controller: _messageController,
+              textCapitalization: TextCapitalization.sentences,
+              autocorrect: true,
+              enableSuggestions: true,
+              decoration:  InputDecoration(
+                labelText: 'Send a message...',
+                border: OutlineInputBorder(
+                  
+                  borderRadius: BorderRadius.circular(16)
+                ),
+              ),
+            ),
           ),
         ),
         IconButton(
             color: Theme.of(context).colorScheme.primary,
             onPressed: _submitMessage,
-            icon: const Icon(Icons.send))
+            icon: const Icon(Icons.send, size: 30,))
       ]),
     );
   }

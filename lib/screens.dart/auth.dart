@@ -190,7 +190,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           },
                           child: Text(_isLogin
                               ? 'Create an account'
-                              : 'alread have account. Login'),
+                              : 'alread have account? Login'),
                         ),
                     ]),
                   ),
